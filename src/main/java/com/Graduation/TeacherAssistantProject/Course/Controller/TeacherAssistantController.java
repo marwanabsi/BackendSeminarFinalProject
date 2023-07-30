@@ -34,11 +34,7 @@ public class TeacherAssistantController {
         TeacherAssistant teacherLoads = service.getTeacherAssInfo(id);
         return new ResponseEntity<>(teacherLoads, HttpStatus.OK);
     }
-    @GetMapping("/getTeacher")
-    public ResponseEntity<List<TeacherLoadDTO>> getUserTeacher() {
-        List<TeacherLoadDTO> teacherLoads = service.GetTeacherUsingUser();
-        return new ResponseEntity<>(teacherLoads, HttpStatus.OK);
-    }
+
 
 
 }

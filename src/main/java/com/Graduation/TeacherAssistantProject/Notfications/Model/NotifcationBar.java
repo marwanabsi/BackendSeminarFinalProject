@@ -21,6 +21,7 @@ public class NotifcationBar {
     @Id
     @GeneratedValue()
     int id;
+    String hi;
     //todo
 //    @OneToMany
 //    List<NotifcationNode> notifcations;

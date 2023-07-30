@@ -11,6 +11,7 @@ import com.Graduation.TeacherAssistantProject.Course.Repositories.CourseRepo;
 import com.Graduation.TeacherAssistantProject.Scheduling.evaluation.Evaluation;
 import com.Graduation.TeacherAssistantProject.Scheduling.evaluation.EvaluationRepo;
 import com.Graduation.TeacherAssistantProject.user.Role;
+import com.Graduation.TeacherAssistantProject.user.User;
 import com.Graduation.TeacherAssistantProject.user.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,7 @@ public class TeacherAssistantService {
     private final CourseRepo courseRepo;
     private final TeacherLoadReop teacherLoadReop;
     private final UserRepository userRepository;
+    User user;
     public ResponseEntity RegisterTeacher(TeacherAssistantRequest request) {
         String username = null;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -41,6 +43,7 @@ public class TeacherAssistantService {
         }
 
         var user = userRepository.findByEmail(username).orElseThrow();
+
         var  teacherAssistant = TeacherAssistant.builder()
                 .name(request.getName())
                 .isAvailable(request.isAvailable())
@@ -80,6 +83,7 @@ public class TeacherAssistantService {
             teacherAssistantRepo.save(teacherAssistant);
         }
         userRepository.save(user);
+        this.user=user;
         return ResponseEntity.ok( "Done" ) ;
 
 
@@ -113,6 +117,13 @@ public class TeacherAssistantService {
                 .orElseThrow(() -> new EntityNotFoundException("TeacherAssistant not found with ID: " + assistantId));
 
         return teacherAssistant;
+    }
+
+    public List<TeacherLoadDTO> GetTeacherUsingUser(){
+        if(this.user!=null){
+           return getAllTeacherLoadsByAssistantId(user.getTeacherAssistant().getId());
+        }
+        return null;
     }
 
 }
